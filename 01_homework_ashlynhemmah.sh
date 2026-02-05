@@ -1,4 +1,7 @@
 
+
+
+
 **HOMEWORK W1**
 
 
@@ -49,3 +52,4 @@ ls
 
 mv week\_1/ ~/Desktop/Genomics/Homework/ #week 1 initially went into the test folder so I moved it out 
 
+DONE!
