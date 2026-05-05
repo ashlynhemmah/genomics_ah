@@ -1,0 +1,15 @@
+% reads passed filetering? 
+	Sample 114568 78.64%
+	Sample 77283 79.53%
+% low quality reads?
+	Sample 114568 21.38%
+	Sample 77283 20.44%
+What is the estimated insert size and what percentage of your reads is it based on?
+	Sample 114568 242bp based on 17.33%
+	Sample 77283 242bp based on 18.74%
+What approx read position does mean quality drop below Q30 on read 2 after filtering?
+	Sample 114568 31.16258M
+	Sample 77283 37.26065M
+How does this differ from the position at which mena quality drops below Q30 on read2 before filtering?
+	Sample 114568 38.63404M
+	Sample 77283 46.01242M
