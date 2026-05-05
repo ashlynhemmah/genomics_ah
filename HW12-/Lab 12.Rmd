@@ -1,0 +1,229 @@
+---
+title: "lab 12"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+date: "2026-04-23"
+---
+
+```{r}
+install.packages("pcadapt")
+install.packages("patchwork")
+install.packages("viridis")
+library(pcadapt)
+library(vcfR)
+library(adegenet)
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(patchwork)
+library(viridis)
+```
+
+```{r}
+meta <- read_csv("/home/group/bioe-591-genomics/course-materials/data/selection/metadata.csv")
+x <- read.pcadapt("/home/group/bioe-591-genomics/course-materials/data/selection/salvelinus.vcf", type = "vcf")
+```
+```{r}
+pca <- pcadapt(x, K = 20)
+plot(pca, option = "screeplot")
+```
+
+```{r}
+pca_4 <- pcadapt(x, K = 4)
+```
+
+```{r}
+alpha <- 0.05
+padj <- p.adjust(pca_4$pvalues, method = "bonferroni")
+outlier_idx <- which(padj < alpha)
+neutral_idx <- which(padj >= alpha)
+cat("Outlier loci:", length(outlier_idx), "\n")
+```
+
+```{r}
+cat("Neutral loci:", length(neutral_idx), "\n")
+```
+```{r}
+plot(pca_4)
+```
+```{r}
+vcf <- read.vcfR("/home/group/bioe-591-genomics/course-materials/data/selection/salvelinus.vcf", verbose = FALSE)
+vcf_neutral <- vcf[neutral_idx, ]
+vcf_outlier <- vcf[outlier_idx, ]
+```
+
+```{r}
+dna_neutral <- vcfR2DNAbin(vcf_neutral, unphased_as_NA = FALSE, consensus = TRUE, extract.haps = FALSE)
+gi_neutral <- DNAbin2genind(dna_neutral)
+dna_outlier <- vcfR2DNAbin(vcf_outlier, unphased_as_NA = FALSE, consensus = TRUE, extract.haps = FALSE)
+gi_outlier <- DNAbin2genind(dna_outlier)
+```
+```{r}
+gi_neutral_scaled <- scaleGen(gi_neutral, NA.method = "mean", scale = FALSE)
+pca_neutral <- prcomp(gi_neutral_scaled, center = FALSE, scale. = FALSE)
+gi_outlier_scaled <- scaleGen(gi_outlier, NA.method = "mean", scale = FALSE)
+pca_outlier <- prcomp(gi_outlier_scaled, center = FALSE, scale. = FALSE)
+```
+
+```{r}
+# turn lists into dataframes
+neutral_df <- data.frame(pca_neutral$x[, 1:2]) %>%
+  mutate(sample = rownames(.))
+outlier_df <- data.frame(pca_outlier$x[, 1:2]) %>%
+  mutate(sample = rownames(.))
+
+# join metadata
+neutral_df <- left_join(neutral_df, meta, by = c("sample" = "Sample.ID"))
+outlier_df <- left_join(outlier_df, meta, by = c("sample" = "Sample.ID"))
+
+# shared axis limits
+xlims <- range(c(outlier_df$PC1, neutral_df$PC1), na.rm = TRUE)
+ylims <- range(c(outlier_df$PC2, neutral_df$PC2), na.rm = TRUE)
+
+# percent variance explained
+neutral_var <- 100 * summary(pca_neutral)$importance[2, ]
+outlier_var <- 100 * summary(pca_outlier)$importance[2, ]
+```
+
+```{r}
+p1 <- ggplot(neutral_df, aes(x = PC1, y = PC2, color=Site.Latitude)) +
+  geom_point(size = 2, alpha = 0.8) +
+  scale_color_viridis() +
+  coord_cartesian(xlim = xlims, ylim = ylims) +
+  theme_classic() +
+  theme(legend.position = "bottom") +
+  labs(
+    title = "PCA: neutral loci",
+    x = paste0("PC1 (", round(neutral_var[1], 1), "%)"),
+    y = paste0("PC2 (", round(neutral_var[2], 1), "%)")
+  ) 
+
+p2 <- ggplot(outlier_df, aes(x = PC1, y = PC2, color=Site.Latitude)) +
+  geom_point(size = 2, alpha = 0.8) +
+  scale_color_viridis() +
+  coord_cartesian(xlim = xlims, ylim = ylims) +
+  theme_classic() +
+  theme(legend.position = "bottom") +
+  labs(
+    title = "PCA: outlier loci only",
+    x = paste0("PC1 (", round(outlier_var[1], 1), "%)"),
+    y = paste0("PC2 (", round(outlier_var[2], 1), "%)")
+  )
+
+p1 + p2
+```
+**Only about 26% of the variability in the neutral loci data set is explained by this explained by this model but, it does look like there is some clustering based on site latitude. For the outlier loci significant more variability is explained by the model(~81%), the grouping within the PCA looks like it is in art due to site latitude.**
+
+```{r}
+
+
+p1latneu <- ggplot(neutral_df, aes(x = Site.Latitude , y = PC1, color= Site.Longitude)) +
+  geom_point(size = 2, alpha = 0.8) +
+  scale_color_viridis() +
+  coord_cartesian(xlim = c(25,75), ylim = ylims) +
+  theme_classic() +
+  theme(legend.position = "bottom") +
+  labs(
+    title = "PCA: neutral loci",
+    y = paste0("PC1 (", round(neutral_var[1], 1), "%)"),
+    x = paste0("Latitude")
+  ) 
+
+p2latneu <- ggplot(neutral_df, aes(x = Site.Latitude , y = PC2, color= Site.Longitude)) +
+  geom_point(size = 2, alpha = 0.8) +
+  scale_color_viridis() +
+  coord_cartesian(xlim = c(25,75), ylim = ylims) +
+  theme_classic() +
+  theme(legend.position = "bottom") +
+  labs(
+    title = "PCA: neutral loci",
+    y = paste0("PC2 (", round(neutral_var[1], 1), "%)"),
+    x = paste0("Latitude" )
+  )
+
+p1latneu + p2latneu
+  
+```
+```{r}
+p1latout <- ggplot(outlier_df, aes(x = Site.Latitude , y = PC1, color= Site.Longitude)) +
+  geom_point(size = 2, alpha = 0.8) +
+  scale_color_viridis() +
+  coord_cartesian(xlim = c(25,75), ylim = ylims) +
+  theme_classic() +
+  theme(legend.position = "bottom") +
+  labs(
+    title = "PCA: outlier loci",
+    y = paste0("PC1 (", round(outlier_var[1], 1), "%)"),
+    x = paste0("Latitude")
+  ) 
+
+p2latout <- ggplot(outlier_df, aes(x = Site.Latitude , y = PC2, color= Site.Longitude)) +
+  geom_point(size = 2, alpha = 0.8) +
+  scale_color_viridis() +
+  coord_cartesian(xlim = c(25,75), ylim = ylims) +
+  theme_classic() +
+  theme(legend.position = "bottom") +
+  labs(
+    title = "PCA: outlier loci",
+    y = paste0("PC2 (", round(outlier_var[1], 1), "%)"),
+    x = paste0("Latitude" )
+  )
+p1latout + p2latout
+```
+**Only about 20% of the variability in the data is captured with both PC1 and PC2 with latitude on the y axis. With PC1 there are two distinct clusters and with PC2 there are sections along the y axis with more grouping but there is a continuous group throughout. With the outlier loci about 78% of the variability was captured in the model. With PC1 all data except for an outlier is centered around -0.5 on the y axis and had an even spread across site latitude. With PC2 there is a cluster around the latitude 35 on the x-axis as well as another cluster blow the rest of the data but the rest of the data is centered around 0 on the x-axis and evenly spread across latitudes.**
+
+```{r}
+p1longout <- ggplot(outlier_df, aes(x = Site.Longitude , y = PC1, color= Site.Latitude)) +
+  geom_point(size = 2, alpha = 0.8) +
+  scale_color_viridis() +
+  coord_cartesian(xlim = c(-100,-45), ylim = ylims) +
+  theme_classic() +
+  theme(legend.position = "bottom") +
+  labs(
+    title = "PCA: outlier loci",
+    y = paste0("PC1 (", round(outlier_var[1], 1), "%)"),
+    x = paste0("Longitude")
+  )
+p2longout <- ggplot(outlier_df, aes(x = Site.Longitude , y = PC2, color= Site.Latitude)) +
+  geom_point(size = 2, alpha = 0.8) +
+  scale_color_viridis() +
+  coord_cartesian(xlim = c(-100,-45), ylim = ylims) +
+  theme_classic() +
+  theme(legend.position = "bottom") +
+  labs(
+    title = "PCA: outlier loci",
+    y = paste0("PC1 (", round(outlier_var[1], 1), "%)"),
+    x = paste0("Longitude")
+  ) 
+
+p1longout + p2longout
+```
+```{r}
+p1longneu <- ggplot(neutral_df, aes(x = Site.Longitude , y = PC1, color= Site.Latitude)) +
+  geom_point(size = 2, alpha = 0.8) +
+  scale_color_viridis() +
+  coord_cartesian(xlim = c(-100,-45), ylim = ylims) +
+  theme_classic() +
+  theme(legend.position = "bottom") +
+  labs(
+    title = "PCA: neutral loci",
+    y = paste0("PC1 (", round(neutral_var[1], 1), "%)"),
+    x = paste0("Longitude")
+  )
+p2longneu <- ggplot(neutral_df, aes(x = Site.Longitude , y = PC2, color= Site.Latitude)) +
+  geom_point(size = 2, alpha = 0.8) +
+  scale_color_viridis() +
+  coord_cartesian(xlim = c(-100,-45), ylim = ylims) +
+  theme_classic() +
+  theme(legend.position = "bottom") +
+  labs(
+    title = "PCA: neutral loci",
+    y = paste0("PC1 (", round(neutral_var[1], 1), "%)"),
+    x = paste0("Longitude")
+  ) 
+
+p1longneu + p2longneu
+```
+**Outlier loci are evenly spread across the x-axis, in the PC1 plot there are a couple single outliers but in the PC2 plot there are two clusters that all have a latitude of around 36. In the plots of the neutral loci there are no real patterns following the longitude gradient some grouping appears fo different site latitudes but the groups are not very distinct. PC1 has a more even spread across longitude but clustering still appears to be in part due to latitude. **
