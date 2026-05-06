@@ -1,0 +1,14 @@
+name: dadi
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.11
+  - dadi
+  - msprime
+  - tskit
+  - numpy
+  - scipy
+  - matplotlib
+  - ipykernel
+  - pandas
