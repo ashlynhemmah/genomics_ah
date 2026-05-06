@@ -1,0 +1,311 @@
+---
+title: "HW10"
+output: html_document
+date: "2026-05-06"
+---
+
+```{r}
+library(tidyverse)
+```
+```{r}
+# read sample names and extract
+fam <- read_table("~/bioe-591-genomics/students/ashlynhemmah/HW10/species.int.fam", 
+  col_names = FALSE,
+  show_col_types = FALSE
+)
+samples <- fam$X2   # individual IDs are usually column 2
+
+# choose your K value (will be 2 for this demo)
+K <- 2
+
+# read Q matrix
+q <- read_table("~/bioe-591-genomics/students/ashlynhemmah/HW10/species.int.2.Q",
+  col_names = FALSE,
+  show_col_types = FALSE
+)
+
+# name the ancestry columns
+colnames(q) <- paste0("Cluster", 1:K)
+
+# combine with sample names
+q_df <- q %>%
+  mutate(sample = samples) %>%
+  relocate(sample)
+
+# convert to long format for ggplot
+q_long <- q_df %>%
+  pivot_longer(
+    cols = starts_with("Cluster"),
+    names_to = "cluster",
+    values_to = "ancestry"
+  ) %>%
+  mutate(sample = factor(sample, levels = samples))
+```
+
+```{r}
+# plot
+ggplot(q_long, aes(x = sample, y = ancestry, fill = cluster)) +
+  geom_col(width = 1, color="white") +
+  theme_bw() +
+  labs(x = "Individual", y = "Ancestry proportion") +
+  theme(
+    panel.grid = element_blank(),
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)
+  )
+```
+
+
+```{r}
+cv_df <- tibble(file = "~/bioe-591-genomics/students/ashlynhemmah/HW10/admixture_AH_HW10_2-3934486.out") %>%
+  mutate(
+    text = map_chr(file, read_file),
+    cv_line = str_extract(text, "CV error \\(K=\\d+\\):\\s*[-0-9.eE]+"),
+    K  = str_match(cv_line, "CV error \\(K=(\\d+)\\)")[,2] |> as.integer(),
+    CV = str_match(cv_line, ":\\s*([-0-9.eE]+)")[,2] |> as.numeric()
+  ) %>%
+  select(file, K, CV) %>%
+  arrange(K)
+cv_df
+```
+
+```{r}
+library(adegenet)
+library(vcfR)
+```
+```{r}
+vcf <- read.vcfR(file = "~/bioe-591-genomics/course-materials/data/structure_data/squirrels.vcf", verbose = TRUE)
+```
+```{r}
+dna <- vcfR2DNAbin(vcf, unphased_as_NA = F, consensus = T, extract.haps = F)
+species_genind <- DNAbin2genind(dna)
+species_genind
+```
+```{r}
+species_genind_scaled <- scaleGen(species_genind,NA.method="mean",scale=F)
+species_pca <- prcomp(species_genind_scaled, center=F,scale=F)
+```
+
+```{r}
+screeplot(species_pca)
+```
+```{r}
+pc <- data.frame(species_pca$x[,1:3])
+pc$sample <- rownames(pc)
+```
+
+```{r}
+ggplot(data=pc,aes(x=PC1,y=PC2))+
+  geom_text(aes(label=sample))
+```
+```{r}
+grp <- find.clusters(species_genind, n.pca = 50, n.clust = 2)
+grp
+```
+
+```{r}
+pc$cluster <- grp$grp
+ggplot(pc, aes(x = PC1, y = PC2, color = cluster)) +
+  geom_point(size = 2) +
+  geom_text(aes(label = sample), vjust = -0.5, size = 3) 
+```
+
+```{r}
+dapc1 <- dapc(species_genind, pop = grp$grp, n.pca = 50, n.da = 2)
+dapc1
+```
+
+```{r}
+q <- as.data.frame(dapc1$posterior)
+  q$sample <- rownames(q)
+  q_long <- q |>
+    pivot_longer(
+      cols = -sample,
+      names_to = "cluster",
+      values_to = "ancestry"
+    )
+q_long
+```
+```{r}
+ggplot(q_long, aes(x = sample, y = ancestry, fill = cluster)) +
+  geom_col(width = 1, color = "white") +
+  theme_bw() +
+  labs(x = "Individual", y = "Assignment probability") +
+  theme(
+    panel.grid = element_blank(),
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)
+  )
+```
+
+```{r}
+# identify clusters
+grp_auto <- find.clusters(
+  species_genind,
+  n.pca = 50,
+  choose.n.clust = FALSE, 
+  max.n.clust = 10,
+  stat = "BIC"
+)
+
+# print BIC values
+grp_auto$Kstat
+```
+
+```{r}
+# plot!
+plot(
+  1:length(grp_auto$Kstat),
+  grp_auto$Kstat,
+  type = "b",
+  xlab = "K",
+  ylab = "BIC"
+)
+```
+**HOMEWORK**
+```{r}
+# read sample names and extract
+fam1 <- read_table("species.int.fam", 
+  col_names = FALSE,
+  show_col_types = FALSE
+)
+samples <- fam1$X2   # individual IDs are usually column 2
+
+# choose your K value (will be 2 for this demo)
+K <- 2
+
+# read Q matrix
+q1 <- read_table("species.int.2.Q",
+  col_names = FALSE,
+  show_col_types = FALSE
+)
+
+# name the ancestry columns
+colnames(q1) <- paste0("Cluster", 1:K)
+
+# combine with sample names
+q1_df <- q1 %>%
+  mutate(sample = samples) %>%
+  relocate(sample)
+
+# convert to long format for ggplot
+q1_long <- q1_df %>%
+  pivot_longer(
+    cols = starts_with("Cluster"),
+    names_to = "cluster",
+    values_to = "ancestry"
+  ) %>%
+  mutate(sample = factor(sample, levels = samples))
+```
+
+
+```{r}
+# plot
+ggplot(q1_long, aes(x = sample, y = ancestry, fill = cluster)) +
+  geom_col(width = 1, color="white") +
+  theme_bw() +
+  labs(x = "Individual", y = "Ancestry proportion") +
+  theme(
+    panel.grid = element_blank(),
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)
+  )
+```
+
+```{r}
+# read sample names and extract
+fam2 <- read_table("species.int.fam", 
+  col_names = FALSE,
+  show_col_types = FALSE
+)
+samples <- fam2$X2   # individual IDs are usually column 2
+
+# choose your K value (will be 2 for this demo)
+K <- 4
+
+# read Q matrix
+q2 <- read_table("species.int.4.Q",
+  col_names = FALSE,
+  show_col_types = FALSE
+)
+
+# name the ancestry columns
+colnames(q2) <- paste0("Cluster", 1:K)
+
+# combine with sample names
+q2_df <- q2 %>%
+  mutate(sample = samples) %>%
+  relocate(sample)
+
+# convert to long format for ggplot
+q2_long <- q2_df %>%
+  pivot_longer(
+    cols = starts_with("Cluster"),
+    names_to = "cluster",
+    values_to = "ancestry"
+  ) %>%
+  mutate(sample = factor(sample, levels = samples))
+```
+
+```{r}
+# plot
+ggplot(q2_long, aes(x = sample, y = ancestry, fill = cluster)) +
+  geom_col(width = 1, color="white") +
+  theme_bw() +
+  labs(x = "Individual", y = "Ancestry proportion") +
+  theme(
+    panel.grid = element_blank(),
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)
+  )
+```
+
+```{r}
+# read sample names and extract
+fam3 <- read_table("species.int.fam", 
+  col_names = FALSE,
+  show_col_types = FALSE
+)
+samples <- fam3$X2   # individual IDs are usually column 2
+
+# choose your K value (will be 2 for this demo)
+K <- 6
+
+# read Q matrix
+q3 <- read_table("species.int.6.Q",
+  col_names = FALSE,
+  show_col_types = FALSE
+)
+
+# name the ancestry columns
+colnames(q3) <- paste0("Cluster", 1:K)
+
+# combine with sample names
+q3_df <- q3 %>%
+  mutate(sample = samples) %>%
+  relocate(sample)
+
+# convert to long format for ggplot
+q3_long <- q3_df %>%
+  pivot_longer(
+    cols = starts_with("Cluster"),
+    names_to = "cluster",
+    values_to = "ancestry"
+  ) %>%
+  mutate(sample = factor(sample, levels = samples))
+```
+
+```{r}
+# plot
+ggplot(q3_long, aes(x = sample, y = ancestry, fill = cluster)) +
+  geom_col(width = 1, color="white") +
+  theme_bw() +
+  labs(x = "Individual", y = "Ancestry proportion") +
+  theme(
+    panel.grid = element_blank(),
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)
+  )
+```
+
+**The paper that this data came from concluded that K=2 is the best fit for the neutral dataset but for the northern population k=6 is highly biologically meaningful. In this analysis we can see that the K=2 is the best fit for the data in the PCA analysis there is a distance split between the two clusters but cluster two is a bit more spread out. Our graph of K=6 is less scattered than the K=4 graph but it still has about 3 individuals that don't fit into a single population. the elbow of our BIC plot is at a K=2 giving faurther evidence that it is the best fit for this data.**
+
+
+
+
+
