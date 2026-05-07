@@ -1,3 +1,4 @@
 # BIOE591 Coursework Repository
-Homework will be labeled #_homework_ashlynhemmah and all homework will be added into a file called homework 
-
+Each weeks homework will be put in a file labeled HW#. 
+All parts to the weekly assignment will be in the HW file for that week.
+There is also a file called "scripts" that has all scripts created (except from HW8)
