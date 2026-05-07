@@ -1,0 +1,64 @@
+##fileformat=VCFv4.2
+##FILTER=<ID=PASS,Description="All filters passed">
+##bcftoolsVersion=1.23.1+htslib-1.23.1
+##bcftoolsCommand=mpileup -f /home/t31d817/bioe-591-genomics/students/ashlynhemmah/HW5/hemoglobin_references.fasta /home/t31d817/bioe-591-genomics/students/ashlynhemmah/HW5/sample.sorted.bam /home/t31d817/bioe-591-genomics/students/ashlynhemmah/HW5/sample1.sorted.bam
+##reference=file:///home/t31d817/bioe-591-genomics/students/ashlynhemmah/HW5/hemoglobin_references.fasta
+##contig=<ID=HBAA_Sicalis_luteiventris,length=880>
+##contig=<ID=HBAD_Sicalis_luteiventris,length=775>
+##contig=<ID=HBB2_Sicalis_luteiventris,length=2272>
+##contig=<ID=HBB_Sicalis_luteiventris,length=1358>
+##contig=<ID=HBE_Sicalis_luteiventris,length=1559>
+##contig=<ID=HBPI_Sicalis_luteiventris,length=1910>
+##contig=<ID=HBRH_Sicalis_luteiventris,length=1143>
+##ALT=<ID=*,Description="Represents allele(s) other than observed.">
+##INFO=<ID=INDEL,Number=0,Type=Flag,Description="Indicates that the variant is an INDEL.">
+##INFO=<ID=IDV,Number=1,Type=Integer,Description="Maximum number of raw reads supporting an indel">
+##INFO=<ID=IMF,Number=1,Type=Float,Description="Maximum fraction of raw reads supporting an indel">
+##INFO=<ID=DP,Number=1,Type=Integer,Description="Raw read depth">
+##INFO=<ID=VDB,Number=1,Type=Float,Description="Variant Distance Bias for filtering splice-site artefacts in RNA-seq data (bigger is better)",Version="3">
+##INFO=<ID=RPBZ,Number=1,Type=Float,Description="Mann-Whitney U-z test of Read Position Bias (closer to 0 is better)">
+##INFO=<ID=MQBZ,Number=1,Type=Float,Description="Mann-Whitney U-z test of Mapping Quality Bias (closer to 0 is better)">
+##INFO=<ID=BQBZ,Number=1,Type=Float,Description="Mann-Whitney U-z test of Base Quality Bias (closer to 0 is better)">
+##INFO=<ID=MQSBZ,Number=1,Type=Float,Description="Mann-Whitney U-z test of Mapping Quality vs Strand Bias (closer to 0 is better)">
+##INFO=<ID=SCBZ,Number=1,Type=Float,Description="Mann-Whitney U-z test of Soft-Clip Length Bias (closer to 0 is better)">
+##INFO=<ID=SGB,Number=1,Type=Float,Description="Segregation based metric, http://samtools.github.io/bcftools/rd-SegBias.pdf">
+##INFO=<ID=MQ0F,Number=1,Type=Float,Description="Fraction of MQ0 reads (smaller is better)">
+##FORMAT=<ID=PL,Number=G,Type=Integer,Description="List of Phred-scaled genotype likelihoods">
+##FORMAT=<ID=AD,Number=R,Type=Integer,Description="Allelic depths (high-quality bases)">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##INFO=<ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
+##INFO=<ID=AN,Number=1,Type=Integer,Description="Total number of alleles in called genotypes">
+##INFO=<ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
+##INFO=<ID=MQ,Number=1,Type=Integer,Description="Average mapping quality">
+##bcftools_callVersion=1.23.1+htslib-1.23.1
+##bcftools_callCommand=call -mv -Ov -o Multi_sample.vcf; Date=Wed May  6 15:46:31 2026
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	/home/t31d817/bioe-591-genomics/students/ashlynhemmah/HW5/sample.sorted.bam	/home/t31d817/bioe-591-genomics/students/ashlynhemmah/HW5/sample1.sorted.bam
+HBAA_Sicalis_luteiventris	422	.	G	C	477.035	.	.	GT:PL:AD	0/1:255,0,255:46,42	0/1:255,0,255:46,42
+HBAD_Sicalis_luteiventris	425	.	T	G	81.1881	.	.	GT:PL:AD	0/1:59,0,255:28,9	0/1:59,0,255:28,9
+HBAD_Sicalis_luteiventris	617	.	A	G	468.147	.	.	GT:PL:AD	0/1:255,0,15:2,33	0/1:255,0,15:2,33
+HBB2_Sicalis_luteiventris	114	.	C	T	247.774	.	.	GT:PL:AD	0/1:141,0,69:19,14	0/1:141,0,69:19,14
+HBB2_Sicalis_luteiventris	120	.	C	A	186.87	.	.	GT:PL:AD	0/1:110,0,90:22,12	0/1:110,0,90:22,12
+HBB2_Sicalis_luteiventris	124	.	G	A	234.49	.	.	GT:PL:AD	0/1:134,0,91:21,14	0/1:134,0,91:21,14
+HBB2_Sicalis_luteiventris	148	.	T	C	284.679	.	.	GT:PL:AD	0/1:159,0,73:31,23	0/1:159,0,73:31,23
+HBB2_Sicalis_luteiventris	235	.	T	C	177.43	.	.	GT:PL:AD	0/1:107,0,255:60,26	0/1:107,0,255:60,26
+HBB2_Sicalis_luteiventris	258	.	A	T	252.247	.	.	GT:PL:AD	0/1:144,0,255:49,33	0/1:144,0,255:49,33
+HBB2_Sicalis_luteiventris	458	.	T	C	67.4652	.	.	GT:PL:AD	0/1:51,0,16:1,2	0/1:51,0,16:1,2
+HBB2_Sicalis_luteiventris	864	.	C	T	103.012	.	.	GT:PL:AD	0/1:68,0,75:15,8	0/1:68,0,75:15,8
+HBB2_Sicalis_luteiventris	870	.	C	A	48.5458	.	.	GT:PL:AD	0/1:41,0,81:20,7	0/1:41,0,81:20,7
+HBB2_Sicalis_luteiventris	874	.	G	A	79.0163	.	.	GT:PL:AD	0/1:56,0,44:21,9	0/1:56,0,44:21,9
+HBB2_Sicalis_luteiventris	898	.	T	C	164.993	.	.	GT:PL:AD	0/1:99,0,63:22,17	0/1:99,0,63:22,17
+HBB2_Sicalis_luteiventris	1977	.	T	C	476.617	.	.	GT:PL:AD	0/1:255,0,233:16,26	0/1:255,0,233:16,26
+HBB2_Sicalis_luteiventris	2016	.	C	T	444.918	.	.	GT:PL:AD	0/1:239,0,255:17,15	0/1:239,0,255:17,15
+HBB2_Sicalis_luteiventris	2023	.	T	C	468.989	.	.	GT:PL:AD	0/1:251,0,215:14,17	0/1:251,0,215:14,17
+HBB2_Sicalis_luteiventris	2032	.	C	G	447.779	.	.	GT:PL:AD	0/1:241,0,108:9,16	0/1:241,0,108:9,16
+HBB_Sicalis_luteiventris	436	.	C	G	468.675	.	.	GT:PL:AD	0/1:255,0,15:3,34	0/1:255,0,15:3,34
+HBB_Sicalis_luteiventris	635	.	G	C	474.712	.	.	GT:PL:AD	0/1:254,0,255:20,15	0/1:254,0,255:20,15
+HBB_Sicalis_luteiventris	896	.	G	A	460.394	.	.	GT:PL:AD	0/1:248,0,255:72,22	0/1:248,0,255:72,22
+HBB_Sicalis_luteiventris	1190	.	G	A	454.716	.	.	GT:PL:AD	0/1:244,0,255:18,12	0/1:244,0,255:18,12
+HBE_Sicalis_luteiventris	854	.	A	T	437.001	.	.	GT:PL:AD	0/1:235,0,255:12,11	0/1:235,0,255:12,11
+HBE_Sicalis_luteiventris	951	.	G	A	477.032	.	.	GT:PL:AD	0/1:255,0,255:16,16	0/1:255,0,255:16,16
+HBE_Sicalis_luteiventris	961	.	T	C	477.027	.	.	GT:PL:AD	0/1:255,0,255:17,16	0/1:255,0,255:17,16
+HBE_Sicalis_luteiventris	1143	.	A	G	420.975	.	.	GT:PL:AD	0/1:227,0,197:9,10	0/1:227,0,197:9,10
+HBE_Sicalis_luteiventris	1251	.	A	C	298.699	.	.	GT:PL:AD	0/1:166,0,124:5,7	0/1:166,0,124:5,7
+HBE_Sicalis_luteiventris	1351	.	C	T	301.814	.	.	GT:PL:AD	0/1:169,0,45:2,7	0/1:169,0,45:2,7
+HBRH_Sicalis_luteiventris	917	.	C	G	476.309	.	.	GT:PL:AD	0/1:255,0,255:24,15	0/1:255,0,255:24,15

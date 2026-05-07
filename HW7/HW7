@@ -1,0 +1,9 @@
+--remove-indels #excludes sites that contain an intel
+--minQ 40 #only includes sites with a quality value greater than 40
+--mac 15 # only include sites with monor allele count of at least 2
+--max-missing-count #excludes sites with more than 2 missing genotypes over all individuals
+--min-meanDP 53 #include only sites with mean depth values of 53
+--hwe 0.05 # sites out of HWE are removed if their p-value is less than 0.05
+--recode --out HW7_final
+
+Summary statistic - I chose to look at relateness of the filtered individuals as well as the p-value for HWE for the filtered individauls. For the relatedness statistic i got all 0's, I was interested in the p-value of HWE because it was one of the filters that I added to my inital code, all of the estimated P values are 0.5. 
