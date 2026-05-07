@@ -1,0 +1,15 @@
+rule fastp:
+    conda:
+        "envs/fastp.yaml"
+    input:
+        r1="bioe-591-genomics/students/ashlynhemmah/HW8/workflow/data/Diglossa_baritula_77283_R1_001.fastq.gz",
+        r2="bioe-591-genomics/students/ashlynhemmah/HW8/workflow/data/Diglossa_baritula_77283_R2_001.fastq.gz"
+    output:
+        r1="results/clean/Diglossa_baritula_77283_R1.clean.fastq.gz",
+        r2="results/clean/Diglossa_baritula_77283_R2.clean.fastq.gz"
+    shell:
+        """
+        fastp \
+        -i {input.r1} -I {input.r2} \
+        -o {output.r1} -O {output.r2}
+        """
