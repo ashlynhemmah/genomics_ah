@@ -1,0 +1,64 @@
+
+Converting file '/home/t31d817/bioe-591-genomics/students/ashlynhemmah/HW13/lemurs.snps.vcf.gz':
+
+Number of samples in VCF: 50
+Total of genotypes processed: 35529
+Genotypes excluded because they exceeded the amount of missing data allowed: 0
+Genotypes that passed missing data filter but were excluded for being MNPs: 0
+SNPs that passed the filters: 35529
+
+Sample 1 of 50, 'mleh019_r01_p1h12', added to the nucleotide matrix(ces).
+Sample 2 of 50, 'mleh020_r01_p2c06', added to the nucleotide matrix(ces).
+Sample 3 of 50, 'mmac001_r99_00000', added to the nucleotide matrix(ces).
+Sample 4 of 50, 'mmac002_r99_00000', added to the nucleotide matrix(ces).
+Sample 5 of 50, 'mmac004_r99_00000', added to the nucleotide matrix(ces).
+Sample 6 of 50, 'mmac005_r99_00000', added to the nucleotide matrix(ces).
+Sample 7 of 50, 'mmac006_r99_00000', added to the nucleotide matrix(ces).
+Sample 8 of 50, 'mmit001_r01_p3f03', added to the nucleotide matrix(ces).
+Sample 9 of 50, 'mmit002_r01_p2b06', added to the nucleotide matrix(ces).
+Sample 10 of 50, 'mmit004_r01_p2g03', added to the nucleotide matrix(ces).
+Sample 11 of 50, 'mmit005_r01_p3f04', added to the nucleotide matrix(ces).
+Sample 12 of 50, 'mmit006_r01_p3b09', added to the nucleotide matrix(ces).
+Sample 13 of 50, 'mmit007_r01_p2a12', added to the nucleotide matrix(ces).
+Sample 14 of 50, 'mmit008_r99_00000', added to the nucleotide matrix(ces).
+Sample 15 of 50, 'mmit009_r99_00000', added to the nucleotide matrix(ces).
+Sample 16 of 50, 'mmit010_r99_00000', added to the nucleotide matrix(ces).
+Sample 17 of 50, 'mmit011_r99_00000', added to the nucleotide matrix(ces).
+Sample 18 of 50, 'mmit012_r99_00000', added to the nucleotide matrix(ces).
+Sample 19 of 50, 'mmit013_r99_00000', added to the nucleotide matrix(ces).
+Sample 20 of 50, 'mmit014_r99_00000', added to the nucleotide matrix(ces).
+Sample 21 of 50, 'mmit015_r99_00000', added to the nucleotide matrix(ces).
+Sample 22 of 50, 'mmit016_r99_00000', added to the nucleotide matrix(ces).
+Sample 23 of 50, 'mmit017_r99_00000', added to the nucleotide matrix(ces).
+Sample 24 of 50, 'mmit018_r99_00000', added to the nucleotide matrix(ces).
+Sample 25 of 50, 'mmit019_r99_00000', added to the nucleotide matrix(ces).
+Sample 26 of 50, 'mmur001_r01_p1b01', added to the nucleotide matrix(ces).
+Sample 27 of 50, 'mmur002_r01_p1a12', added to the nucleotide matrix(ces).
+Sample 28 of 50, 'mmur006_r01_p3b06', added to the nucleotide matrix(ces).
+Sample 29 of 50, 'msim003_r99_00000', added to the nucleotide matrix(ces).
+Sample 30 of 50, 'msim004_r99_00000', added to the nucleotide matrix(ces).
+Sample 31 of 50, 'msim007_r99_00000', added to the nucleotide matrix(ces).
+Sample 32 of 50, 'msim008_r99_00000', added to the nucleotide matrix(ces).
+Sample 33 of 50, 'msim009_r99_00000', added to the nucleotide matrix(ces).
+Sample 34 of 50, 'mspp002_r01_p3c01', added to the nucleotide matrix(ces).
+Sample 35 of 50, 'mspp003_r01_p3d09', added to the nucleotide matrix(ces).
+Sample 36 of 50, 'mspp004_r01_p1c06', added to the nucleotide matrix(ces).
+Sample 37 of 50, 'mspp005_r01_p3d05', added to the nucleotide matrix(ces).
+Sample 38 of 50, 'mspp007_r01_p3f01', added to the nucleotide matrix(ces).
+Sample 39 of 50, 'mspp008_r01_p3f05', added to the nucleotide matrix(ces).
+Sample 40 of 50, 'mspp010_r01_p3c02', added to the nucleotide matrix(ces).
+Sample 41 of 50, 'mspp017_r99_00000', added to the nucleotide matrix(ces).
+Sample 42 of 50, 'mspp018_r99_00000', added to the nucleotide matrix(ces).
+Sample 43 of 50, 'mspp019_r99_00000', added to the nucleotide matrix(ces).
+Sample 44 of 50, 'mspp021_r99_00000', added to the nucleotide matrix(ces).
+Sample 45 of 50, 'mspp023_r99_00000', added to the nucleotide matrix(ces).
+Sample 46 of 50, 'mspp024_r99_00000', added to the nucleotide matrix(ces).
+Sample 47 of 50, 'mspp026_r99_00000', added to the nucleotide matrix(ces).
+Sample 48 of 50, 'mspp027_r99_00000', added to the nucleotide matrix(ces).
+Sample 49 of 50, 'mspp030_r99_00000', added to the nucleotide matrix(ces).
+Sample 50 of 50, 'mspp032_r99_00000', added to the nucleotide matrix(ces).
+
+PHYLIP matrix saved to: lemurs.snps.min4.phy
+
+Done!
+
